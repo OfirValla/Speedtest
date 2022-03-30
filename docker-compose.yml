@@ -8,3 +8,4 @@ services:
     restart: unless-stopped
     environment:
         - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
+        - TIMEZONE=${TIMEZONE}
