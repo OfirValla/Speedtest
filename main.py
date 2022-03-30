@@ -1,7 +1,7 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from discord_webhook import DiscordWebhook, DiscordEmbed
+from datetime import datetime, time
 from speedtest import Speedtest
-from datetime import datetime
 import urllib
 import os
 
@@ -42,8 +42,16 @@ def has_network_connection(host='https://www.google.com'):
 # -------------------------------------------------------------------------------------------------------------------- #
 
 
+def is_night_time():
+    now_time = datetime.now().time()
+    return now_time >= time(00, 00) or now_time <= time(7, 00)
+
+
+# -------------------------------------------------------------------------------------------------------------------- #
+
+
 def do_speedtest():
-    if not has_network_connection():
+    if not has_network_connection() or is_night_time():
         return
 
     connection = Speedtest()
