@@ -67,6 +67,7 @@ def do_speedtest():
     upload = connection.results.upload / 1024 / 1024
 
     send_discord_message([
+        {'Title': 'Time', 'Content': TIMEZONE.localize(datetime.now()).strftime("%m/%d/%Y %H:%M:%S"), 'Color': '03b2f8'},
         {'Title': 'Latency', 'Content': f'The latency of the test was: {ping}ms', 'Color': '03b2f8'},
         {'Title': 'Download Speed', 'Content': f'The download speed is: {download:.2f}MB', 'Color': '03b2f8'},
         {'Title': 'Upload Speed', 'Content': f'The upload speed is: {upload:.2f}MB', 'Color': '03b2f8'}
