@@ -3,6 +3,7 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 from datetime import datetime, time
 from speedtest import Speedtest
 import urllib
+import pytz
 import os
 
 
@@ -10,6 +11,7 @@ import os
 
 
 DISCORD_WEBHOOK = os.getenv('DISCORD_WEBHOOK')
+TIMEZONE = pytz.timezone(os.getenv('TIMEZONE'))
 
 
 # --------------------------------------------------- METHODS -------------------------------------------------------- #
@@ -43,7 +45,8 @@ def has_network_connection(host='https://www.google.com'):
 
 
 def is_night_time():
-    now_time = datetime.now().time()
+    now = TIMEZONE.localize(datetime.now())
+    now_time = now.time()
     return now_time >= time(00, 00) or now_time <= time(7, 00)
 
 
