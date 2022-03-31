@@ -4,9 +4,12 @@ services:
   speedtest:
     image: python-speedtest:1.0
     build:
-        context: .
-        dockerfile: Dockerfile
+      network: host
+      context: .
+      dockerfile: Dockerfile
     restart: unless-stopped
     environment:
         - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
         - TIMEZONE=${TIMEZONE}
+    network_mode: host
+
