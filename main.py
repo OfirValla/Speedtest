@@ -11,7 +11,7 @@ import os
 
 
 DISCORD_WEBHOOK = os.getenv('DISCORD_WEBHOOK')
-TIMEZONE =  zoneinfo.ZoneInfo(os.getenv('TIMEZONE'))
+TIMEZONE = zoneinfo.ZoneInfo(os.getenv('TIMEZONE'))
 
 
 # --------------------------------------------------- METHODS -------------------------------------------------------- #
@@ -45,7 +45,7 @@ def has_network_connection(host='https://www.google.com'):
 
 
 def is_night_time():
-    currtime = datetime.now(tz=timezone)
+    currtime = datetime.now(tz=TIMEZONE)
     now_time = currtime.time()
     return time(00, 00) <= now_time <= time(7, 00)
 
@@ -54,7 +54,7 @@ def is_night_time():
 
 
 def do_speedtest():
-    now = datetime.now(tz=timezone)
+    now = datetime.now(tz=TIMEZONE)
 
     if not has_network_connection() or is_night_time():
         print(f'{now} NightTime - Not running speed test')
