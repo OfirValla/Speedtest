@@ -54,6 +54,7 @@ def is_night_time():
 
 
 def do_speedtest():
+    print(TIMEZONE.localize(datetime.now()).strftime("%m/%d/%Y %H:%M:%S"))
     if not has_network_connection() or is_night_time():
         return
 
