@@ -3,6 +3,8 @@ FROM python:3 as base
 WORKDIR /app
 RUN dpkg-reconfigure -f noninteractive git
 RUN git clone https://github.com/OfirValla/Speedtest.git
+WORKDIR /app/Speedtest
+RUN git pull
 
 COPY . .
 
