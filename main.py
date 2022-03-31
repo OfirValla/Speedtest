@@ -2,8 +2,8 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from datetime import datetime, time
 from speedtest import Speedtest
+import zoneinfo
 import urllib
-import pytz
 import os
 
 
@@ -11,7 +11,7 @@ import os
 
 
 DISCORD_WEBHOOK = os.getenv('DISCORD_WEBHOOK')
-TIMEZONE = pytz.timezone(os.getenv('TIMEZONE'))
+TIMEZONE =  zoneinfo.ZoneInfo(os.getenv('TIMEZONE'))
 
 
 # --------------------------------------------------- METHODS -------------------------------------------------------- #
@@ -45,19 +45,22 @@ def has_network_connection(host='https://www.google.com'):
 
 
 def is_night_time():
-    now = TIMEZONE.localize(datetime.now())
-    now_time = now.time()
-    return now_time >= time(00, 00) or now_time <= time(7, 00)
+    currtime = datetime.now(tz=timezone)
+    now_time = currtime.time()
+    return time(00, 00) <= now_time <= time(7, 00)
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
 
 
 def do_speedtest():
-    print(TIMEZONE.localize(datetime.now()).strftime("%m/%d/%Y %H:%M:%S"))
+    now = datetime.now(tz=timezone)
+
     if not has_network_connection() or is_night_time():
+        print(f'{now} NightTime - Not running speed test')
         return
 
+    print(f'{now} Running speed test')
     connection = Speedtest()
 
     connection.download()
@@ -68,10 +71,9 @@ def do_speedtest():
     upload = connection.results.upload / 1024 / 1024
 
     send_discord_message([
-        {'Title': 'Time', 'Content': TIMEZONE.localize(datetime.now()).strftime("%m/%d/%Y %H:%M:%S"), 'Color': '03b2f8'},
-        {'Title': 'Latency', 'Content': f'The latency of the test was: {ping}ms', 'Color': '03b2f8'},
-        {'Title': 'Download Speed', 'Content': f'The download speed is: {download:.2f}MB', 'Color': '03b2f8'},
-        {'Title': 'Upload Speed', 'Content': f'The upload speed is: {upload:.2f}MB', 'Color': '03b2f8'}
+        {'Title': 'Latency', 'Content': f'The latency of the test was: {ping}ms', 'Color': 'fff38e'},
+        {'Title': 'Download Speed', 'Content': f'The download speed is: {download:.2f}MB', 'Color': '6afff3'},
+        {'Title': 'Upload Speed', 'Content': f'The upload speed is: {upload:.2f}MB', 'Color': 'bf71ff'}
     ])
 
 
