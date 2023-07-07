@@ -2,7 +2,6 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from datetime import datetime, time
 from speedtest import Speedtest
-import zoneinfo
 import urllib
 import os
 
@@ -11,7 +10,6 @@ import os
 
 
 DISCORD_WEBHOOK = os.getenv('DISCORD_WEBHOOK')
-TIMEZONE = zoneinfo.ZoneInfo(os.getenv('TIMEZONE'))
 
 
 # --------------------------------------------------- METHODS -------------------------------------------------------- #
@@ -44,20 +42,9 @@ def has_network_connection(host='https://www.google.com'):
 # -------------------------------------------------------------------------------------------------------------------- #
 
 
-def is_night_time():
-    currtime = datetime.now(tz=TIMEZONE)
-    now_time = currtime.time()
-    return time(00, 00) <= now_time <= time(7, 00)
-
-
-# -------------------------------------------------------------------------------------------------------------------- #
-
-
 def do_speedtest():
-    now = datetime.now(tz=TIMEZONE)
-
-    if not has_network_connection() or is_night_time():
-        print(f'{now} NightTime - Not running speed test')
+    if not has_network_connection():
+        print(f'No internet connection')
         return
 
     print(f'{now} Running speed test')
