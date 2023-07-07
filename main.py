@@ -44,10 +44,10 @@ def has_network_connection(host='https://www.google.com'):
 
 def do_speedtest():
     if not has_network_connection():
-        print(f'No internet connection')
+        print('No internet connection')
         return
 
-    print(f'{now} Running speed test')
+    print('Running speed test')
     connection = Speedtest()
 
     connection.download()
